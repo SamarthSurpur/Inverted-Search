@@ -1,0 +1,49 @@
+#include "inverted_index.h"
+
+// Display the inverted index database
+int display_DB(main_node_t **head)
+{
+    int flag = 0;
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        if (head[i] != NULL)                                                         // Check if all the head values are not NULL
+        {
+            flag++;
+        }
+    }
+
+    if (flag > 0)
+    {
+        printf("[Index]   [Word]   FileCount  File(s):   Filename   WordCount  Time(s)\n");
+
+        for (int i = 0; i < SIZE; i++)                                               // Iterate over all the indexes
+        {
+            main_node_t *temp = head[i];
+
+            while (temp)                                                             // Iterate over the linked list at each index
+            {
+                printf("[%d]   ", i);                                                // Print the index
+                printf("[ %s ]   ", temp->word);                                     // Print the word
+                printf("%d    file(s):   ", temp->f_count);                          // Print the file count
+
+                sub_node_t *temp1 = temp->sub_link;
+
+                while (temp1)                                                        // Iterate over the linked list of sub-nodes
+                {
+                    printf("%s   ", temp1->f_name);                                   // Print the filename
+                    printf("%d   time(s)   ", temp1->w_count);                        // Print the word count
+
+                    temp1 = temp1->link;
+                }
+
+                printf("\n");
+                temp = temp->link;
+            }
+        }
+
+        return SUCCESS;
+    }
+
+    return EMPTYLIST;
+}

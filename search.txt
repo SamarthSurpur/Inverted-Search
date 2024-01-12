@@ -1,0 +1,43 @@
+#include "inverted_index.h"
+
+// Search for a word in the inverted index database
+int search_DB(main_node_t **head, char *word)
+{
+    int index, flag = 0;
+    char ch = toupper(word[0]);                                     // Convert the first character of the word to uppercase
+    index = ch % 65;                                                  // Calculate the index
+    main_node_t *temp = head[index];                                 // Declare *temp and assign head[index]
+
+    if (temp == NULL)                                              // If temp is NULL
+    {
+        return NOT_PRESENT;                                         // Return NOT_PRESENT
+    }
+
+    while (temp)
+    {
+        if (!strcmp(temp->word, word))                                   // If the word matches temp->word
+        {
+            flag++;
+            printf("Word %s is present in %d file(s)\n", word, temp->f_count);           // Print the word and the number of files
+
+            sub_node_t *temp1 = temp->sub_link;
+            while (temp1)
+            {
+                printf("In file: %s   %d time(s)\n", temp1->f_name, temp1->w_count);       // Print the filenames and word count
+                temp1 = temp1->link;
+            }
+        }
+        temp = temp->link;
+    }
+
+    printf("\n");
+
+    if (flag > 0)
+    {
+        return SUCCESS;
+    }
+    else
+    {
+        return NOT_PRESENT;
+    }
+}
